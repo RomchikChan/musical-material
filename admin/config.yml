@@ -1,6 +1,5 @@
 backend:
-  name: github
-  repo: RomchikChan/musical-material
+  name: git-gateway
   branch: main
 
 media_folder: "assets/images"
@@ -19,7 +18,6 @@ collections:
       - { label: "Текст песни", name: "lyrics", widget: "text" }
       - { label: "YouTube видео", name: "youtube_url", widget: "string", required: false }
       
-      # Инструменты и партии (МОЖНО ДОБАВЛЯТЬ СКОЛЬКО УГОДНО)
       - label: "Инструменты и партии"
         name: "instruments"
         widget: "list"
@@ -46,7 +44,6 @@ collections:
             name: "part_content"
             widget: "text"
             
-          # ССЫЛКИ ДЛЯ ИНСТРУМЕНТА
           - label: "Ссылки"
             name: "links"
             widget: "list"
@@ -58,16 +55,3 @@ collections:
                 name: "type"
                 widget: "select"
                 options: ["Табы", "YouTube урок", "Ноты PDF", "Кавер", "Разбор"]
-
-  - name: "videos"
-    label: "Видео"
-    folder: "_videos"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Название видео", name: "title", widget: "string" }
-      - { label: "YouTube ссылка", name: "youtube_url", widget: "string" }
-      - label: "Инструменты в видео"
-        name: "instruments"
-        widget: "list"
-        field: { label: "Инструмент", name: "instrument", widget: "string" }
