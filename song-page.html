@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ГАРАЖ - Песня</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+        
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --card-bg: #f5f5f5;
+            --border: #dddddd;
+            --secondary-text: #666666;
+        }
+        
+        [data-theme="dark"] {
+            --bg: #000000;
+            --text: #ffffff;
+            --card-bg: #111111;
+            --border: #333333;
+            --secondary-text: #888888;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        #theme-button {
+            background: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 12px 24px;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        #theme-button:hover {
+            background: var(--text);
+            color: var(--bg);
+        }
+        
+        .back-button {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--secondary-text);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9em;
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            transition: all 0.3s;
+        }
+        
+        .back-button:hover {
+            border-color: var(--text);
+            color: var(--text);
+        }
+        
+        .song-page {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 50px;
+        }
+        
+        .song-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        h1 {
+            font-size: 3.5em;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 15px;
+        }
+        
+        .song-date {
+            color: var(--secondary-text);
+            font-size: 0.9em;
+            letter-spacing: 2px;
+        }
+        
+        .video-placeholder {
+            background: var(--bg);
+            height: 400px;
+            margin: 40px 0;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary-text);
+            font-size: 1.2em;
+        }
+        
+        .lyrics-section {
+            margin: 50px 0;
+            padding: 40px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: var(--text);
+            letter-spacing: -0.5px;
+        }
+        
+        .lyrics {
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            color: var(--secondary-text);
+            line-height: 2;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 2px;
+            margin: 40px 0 20px;
+            flex-wrap: wrap;
+            background: var(--bg);
+            border: 1px solid var(--border);
+        }
+        
+        .tab-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 15px 25px;
+            background: var(--card-bg);
+            border: none;
+            color: var(--secondary-text);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-right: 1px solid var(--border);
+        }
+        
+        .tab-button:last-child {
+            border-right: none;
+        }
+        
+        .tab-button:hover {
+            background: var(--bg);
+            color: var(--text);
+        }
+        
+        .tab-button.active {
+            background: var(--text);
+            color: var(--bg);
+        }
+        
+        .tab-content {
+            display: none;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 40px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .part-content {
+            color: var(--secondary-text);
+            line-height: 2;
+            margin-bottom: 30px;
+            white-space: pre-wrap;
+        }
+        
+        .links-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .links-title {
+            color: var(--text);
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9em;
+        }
+        
+        .resource-link {
+            display: inline-block;
+            margin-right: 15px;
+            margin-bottom: 10px;
+            padding: 8px 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--secondary-text);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .resource-link:hover {
+            border-color: var(--text);
+            color: var(--text);
+        }
+        
+        .song-instruments {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .instrument-badge {
+            padding: 4px 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--secondary-text);
+            font-size: 0.8em;
+            text-transform: uppercase;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .nav-link {
+            color: var(--secondary-text);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9em;
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            border-color: var(--text);
+            color: var(--text);
+        }
+        
+        .empty-instruments {
+            text-align: center;
+            padding: 60px;
+            color: var(--secondary-text);
+            border: 1px dashed var(--border);
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="theme-button">ТЕМНАЯ ТЕМА</button>
+    </div>
+
+    <div class="container">
+        <a href="/" class="back-button">← К ПЕСНЯМ</a>
+        
+        <div class="song-page">
+            <div class="song-header">
+                <h1 id="song-title">Название песни</h1>
+                <div class="song-date" id="song-date">Год • Альбом</div>
+                <div class="song-instruments" id="instruments-badges"></div>
+            </div>
+            
+            <div class="video-placeholder" id="video-placeholder">
+                [ ЗДЕСЬ БУДЕТ YOUTUBE ВИДЕО ]
+            </div>
+            
+            <div class="lyrics-section">
+                <h2>ТЕКСТ</h2>
+                <div class="lyrics" id="song-lyrics">
+                    Текст песни появится после добавления в админке
+                </div>
+            </div>
+            
+            <h2>ПАРТИИ И МАТЕРИАЛЫ</h2>
+            
+            <div class="tabs" id="instrument-tabs">
+                <!-- Сюда будут добавляться кнопки инструментов -->
+            </div>
+            
+            <div id="instrument-contents">
+                <!-- Сюда будут добавляться содержимое вкладок -->
+            </div>
+            
+            <div class="navigation">
+                <a href="#" class="nav-link" id="prev-song">← ПРЕДЫДУЩАЯ</a>
+                <a href="#" class="nav-link" id="next-song">СЛЕДУЮЩАЯ →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Код темы (такой же как на главной)
+        const themeButton = document.getElementById('theme-button');
+        const savedTheme = localStorage.getItem('theme');
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        const currentTheme = savedTheme || systemTheme;
+        
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        themeButton.textContent = currentTheme === 'dark' ? 'СВЕТЛАЯ ТЕМА' : 'ТЕМНАЯ ТЕМА';
+        
+        themeButton.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeButton.textContent = newTheme === 'dark' ? 'СВЕТЛАЯ ТЕМА' : 'ТЕМНАЯ ТЕМА';
+        });
+        
+        // Здесь будет загружаться данные песни
+        // Пока просто показываем демо-данные
+        document.addEventListener('DOMContentLoaded', function() {
+            // Пример данных песни (потом будут приходить из админки)
+            const demoInstruments = [
+                {
+                    name: 'ГИТАРА 1',
+                    content: 'Куплет: Am, C, G, Em\nПрипев: F, G, Am\nБой: восьмерка',
+                    links: [
+                        { title: 'ТАБЫ НА SONGSTERR', url: '#' },
+                        { title: 'YOUTUBE РАЗБОР', url: '#' }
+                    ]
+                },
+                {
+                    name: 'ГИТАРА 2',
+                    content: 'Соло в тональности Am, пентатоника',
+                    links: [
+                        { title: 'GP ТАБЫ', url: '#' },
+                        { title: 'УРОК СОЛО', url: '#' }
+                    ]
+                },
+                {
+                    name: 'БАС',
+                    content: 'Корневые ноты, грув на восьмых',
+                    links: [
+                        { title: 'БАС ТАБЫ', url: '#' }
+                    ]
+                },
+                {
+                    name: 'БАРАБАНЫ',
+                    content: 'Темп: 120 BPM\nРисунок: прямой рок',
+                    links: [
+                        { title: 'НОТЫ PDF', url: '#' },
+                        { title: 'ДРОМ КАВЕР', url: '#' }
+                    ]
+                }
+            ];
+            
+            const tabsContainer = document.getElementById('instrument-tabs');
+            const contentsContainer = document.getElementById('instrument-contents');
+            
+            demoInstruments.forEach((inst, index) => {
+                // Создаем кнопку
+                const button = document.createElement('button');
+                button.className = `tab-button ${index === 0 ? 'active' : ''}`;
+                button.textContent = inst.name;
+                button.onclick = function() {
+                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                    button.classList.add('active');
+                    document.getElementById(`inst-${index}`).classList.add('active');
+                };
+                tabsContainer.appendChild(button);
+                
+                // Создаем содержимое
+                const content = document.createElement('div');
+                content.id = `inst-${index}`;
+                content.className = `tab-content ${index === 0 ? 'active' : ''}`;
+                
+                let linksHtml = '';
+                inst.links.forEach(link => {
+                    linksHtml += `<a href="${link.url}" class="resource-link" target="_blank">🔗 ${link.title}</a>`;
+                });
+                
+                content.innerHTML = `
+                    <div class="part-content">${inst.content.replace(/\n/g, '<br>')}</div>
+                    <div class="links-section">
+                        <div class="links-title">ССЫЛКИ ПО ИНСТРУМЕНТУ:</div>
+                        ${linksHtml}
+                    </div>
+                `;
+                contentsContainer.appendChild(content);
+            });
+            
+            // Добавляем бейджи инструментов
+            const badgesContainer = document.getElementById('instruments-badges');
+            demoInstruments.forEach(inst => {
+                const badge = document.createElement('span');
+                badge.className = 'instrument-badge';
+                badge.textContent = `🎸 ${inst.name}`;
+                badgesContainer.appendChild(badge);
+            });
+        });
+    </script>
+</body>
+</html>

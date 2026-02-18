@@ -1,0 +1,73 @@
+backend:
+  name: github
+  repo: RomchikChan/musical-material
+  branch: main
+
+media_folder: "assets/images"
+public_folder: "/assets/images"
+
+collections:
+  - name: "songs"
+    label: "Песни"
+    folder: "_songs"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Название песни", name: "title", widget: "string" }
+      - { label: "Год", name: "year", widget: "string" }
+      - { label: "Длительность", name: "duration", widget: "string", required: false }
+      - { label: "Текст песни", name: "lyrics", widget: "text" }
+      - { label: "YouTube видео", name: "youtube_url", widget: "string", required: false }
+      
+      # Инструменты и партии (МОЖНО ДОБАВЛЯТЬ СКОЛЬКО УГОДНО)
+      - label: "Инструменты и партии"
+        name: "instruments"
+        widget: "list"
+        summary: "{{fields.instrument}} - {{fields.part_preview}}"
+        fields:
+          - label: "Инструмент"
+            name: "instrument"
+            widget: "select"
+            options:
+              - { label: "🎸 Гитара 1", value: "guitar1" }
+              - { label: "🎸 Гитара 2", value: "guitar2" }
+              - { label: "🎸 Гитара 3", value: "guitar3" }
+              - { label: "🎸 Бас-гитара", value: "bass" }
+              - { label: "🥁 Барабаны", value: "drums" }
+              - { label: "🎤 Вокал", value: "vocals" }
+              - { label: "🎹 Клавиши", value: "keys" }
+          
+          - label: "Краткое описание"
+            name: "part_preview"
+            widget: "string"
+            hint: "Например: Ритм, Соло, Акустика"
+          
+          - label: "Партия / Аккорды / Табы"
+            name: "part_content"
+            widget: "text"
+            
+          # ССЫЛКИ ДЛЯ ИНСТРУМЕНТА
+          - label: "Ссылки"
+            name: "links"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "Название", name: "title", widget: "string" }
+              - { label: "URL", name: "url", widget: "string" }
+              - label: "Тип"
+                name: "type"
+                widget: "select"
+                options: ["Табы", "YouTube урок", "Ноты PDF", "Кавер", "Разбор"]
+
+  - name: "videos"
+    label: "Видео"
+    folder: "_videos"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Название видео", name: "title", widget: "string" }
+      - { label: "YouTube ссылка", name: "youtube_url", widget: "string" }
+      - label: "Инструменты в видео"
+        name: "instruments"
+        widget: "list"
+        field: { label: "Инструмент", name: "instrument", widget: "string" }

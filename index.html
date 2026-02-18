@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ГАРАЖ | Источник данных</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+        
+        /* Светлая тема (по умолчанию) */
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --card-bg: #f5f5f5;
+            --border: #dddddd;
+            --header-bg: #f0f0f0;
+            --accent: #333333;
+            --secondary-text: #666666;
+        }
+        
+        /* Темная тема */
+        [data-theme="dark"] {
+            --bg: #000000;
+            --text: #ffffff;
+            --card-bg: #111111;
+            --border: #333333;
+            --header-bg: #0a0a0a;
+            --accent: #666666;
+            --secondary-text: #888888;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+        }
+        
+        /* Кнопка темы */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        #theme-button {
+            background: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 12px 24px;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        
+        #theme-button:hover {
+            background: var(--text);
+            color: var(--bg);
+        }
+        
+        header {
+            border: 1px solid var(--border);
+            padding: 60px 40px;
+            margin-bottom: 40px;
+            background: var(--header-bg);
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 4em;
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+        
+        .band-description {
+            color: var(--secondary-text);
+            font-size: 1.2em;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .section-title {
+            font-size: 2em;
+            font-weight: 700;
+            margin: 60px 0 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+            color: var(--text);
+        }
+        
+        .songs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .song-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+            padding: 25px;
+            cursor: pointer;
+        }
+        
+        .song-card:hover {
+            border-color: var(--text);
+            transform: translateY(-5px);
+        }
+        
+        .song-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+        
+        .song-meta {
+            display: flex;
+            gap: 20px;
+            color: var(--secondary-text);
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+        
+        .instruments-list {
+            margin: 20px 0;
+        }
+        
+        .instrument-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--secondary-text);
+            font-size: 0.85em;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--secondary-text);
+        }
+        
+        .empty-state p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        
+        .admin-link {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--text);
+            color: var(--bg);
+            padding: 15px 30px;
+            text-decoration: none;
+            font-weight: bold;
+            letter-spacing: 2px;
+            border: none;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .admin-link:hover {
+            background: var(--secondary-text);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding: 40px 0;
+            color: var(--secondary-text);
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="theme-button">ТЕМНАЯ ТЕМА</button>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>ГАРАЖ</h1>
+            <p class="band-description">ИСТОЧНИК ДАННЫХ</p>
+        </header>
+        
+        <!-- Список песен будет заполняться из админки -->
+        <h2 class="section-title">ПЕСНИ</h2>
+        <div id="songs-container" class="songs-grid">
+            <!-- Пока песен нет, показываем заглушку -->
+            <div class="empty-state" style="grid-column: 1/-1;">
+                <p>⚡ Пока нет добавленных песен</p>
+                <p>Зайди в админку и добавь первую песню!</p>
+                <a href="/admin/" style="color: var(--text); text-decoration: underline; margin-top: 20px; display: inline-block;">Перейти в админку →</a>
+            </div>
+        </div>
+        
+        <!-- Видео раздел (тоже будет заполняться) -->
+        <h2 class="section-title">ВИДЕО</h2>
+        <div id="videos-container" class="videos-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px;">
+            <!-- Заглушка для видео -->
+            <div class="empty-state" style="grid-column: 1/-1; padding: 40px;">
+                <p>🎥 Видео появятся после добавления песен</p>
+            </div>
+        </div>
+        
+        <footer>
+            © 2024 ГАРАЖ • ИСТОЧНИК ДАННЫХ
+        </footer>
+    </div>
+    
+    <a href="/admin/" class="admin-link">АДМИНКА</a>
+
+    <script>
+        // Система смены темы
+        const themeButton = document.getElementById('theme-button');
+        
+        // Проверяем сохраненную тему или тему системы
+        const savedTheme = localStorage.getItem('theme');
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        const currentTheme = savedTheme || systemTheme;
+        
+        // Применяем тему
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        themeButton.textContent = currentTheme === 'dark' ? 'СВЕТЛАЯ ТЕМА' : 'ТЕМНАЯ ТЕМА';
+        
+        // Обработчик кнопки
+        themeButton.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeButton.textContent = newTheme === 'dark' ? 'СВЕТЛАЯ ТЕМА' : 'ТЕМНАЯ ТЕМА';
+        });
+        
+        // Слушаем изменения системной темы
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                const newTheme = e.matches ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                themeButton.textContent = newTheme === 'dark' ? 'СВЕТЛАЯ ТЕМА' : 'ТЕМНАЯ ТЕМА';
+            }
+        });
+    </script>
+</body>
+</html>
